@@ -8,7 +8,7 @@ import com.uniovi.entities.User;
 
 public interface UsersRepository extends CrudRepository<User, Long>{	
 	
-	User findByName(String name);
+	User findByEmail(String email);
 	
 	Page<User> findAll(Pageable pageable); 
 

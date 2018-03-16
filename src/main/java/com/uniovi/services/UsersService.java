@@ -37,8 +37,8 @@ public class UsersService {
 		usersRepository.save(user);
 	}
 
-	public User getUserByName(String name) {
-		return usersRepository.findByName(name);
+	public User getUserByEmail(String name) {
+		return usersRepository.findByEmail(name);
 	}
 
 	public void deleteUser(Long id) {
