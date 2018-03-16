@@ -7,14 +7,13 @@
 	<div class="container">
 		<h2 th:text="#{userListTitle.message}">Usuarios</h2>
 		<p th:text="#{userListDescription.message}">Los usuarios que
-			actualmente figuran en el sistema son los siguientes:</p>
+			actualmente estan registrados en la RedSocial son:</p>
 		<div class="table-responsive">
 			<table class="table table-hover">
 				<thead>
 					<tr>
-						<th th:text="#{userDetailsID.message}">DNI</th>
-						<th th:text="#{userDetailsName.message}">Nombre</th>
-						<th th:text="#{userDetailsSurname.message}">Apellidos</th>
+						<th th:text="#{userDetailsID.message}">Nombre:</th>
+						<th th:text="#{userDetailsName.message}">Email:</th>
 						<th class="col-md-1"></th>
 						<th class="col-md-1"></th>
 						<th class="col-md-1"></th>
@@ -24,14 +23,13 @@
 				</thead>
 				<tbody>
 					<tr th:each="user : ${usersList}">
-						<td th:text="${user.dni}">71888888X</td>
-						<td th:text="${user.name}">Nombre del alumno</td>
-						<td th:text="${user.lastName}">Apellidos del alumno</td>
+						<td th:text="${user.name}">Nombre del usuario</td>
+						<td th:text="${user.email}">Email del usuario</td>
 						<td><a th:href="${'/user/details/' + user.id}"
 							th:text="#{noteListTableDetails.message}">detalles</a></td>
-						<td><a th:href="${'/user/edit/' + user.id}"
+						<td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="${'/user/edit/' + user.id}"
 							th:text="#{noteListTableModify.message}">modificar</a></td>
-						<td><a th:href="${'/user/delete/' + user.id}"
+						<td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="${'/user/delete/' + user.id}"
 							th:text="#{noteListTableDelete.message}">eliminar</a></td>
 					</tr>
 				</tbody>

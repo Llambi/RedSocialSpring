@@ -30,11 +30,11 @@ public class UsersController {
 	@Autowired
 	private SignUpFormValidator signUpFormValidator;
 	
-//	@RequestMapping("/user/list" )
-//	public String getListado(Model model){
-//		model.addAttribute("usersList", usersService.getUsers());
-//		return "user/list";
-//	}
+	@RequestMapping("/user/list" )
+	public String getListado(Model model){
+		model.addAttribute("usersList", usersService.getUsers());
+		return "user/list";
+	}
 //	
 //	@RequestMapping(value="/user/add")
 //	public String getUser(Model model){

@@ -16,16 +16,16 @@
 						Gestión de notas <span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
-						<li><a href="/mark/add" th:text="#{addNote.message}" sec:authorize="hasRole('ROLE_PROFESSOR')">Agregar Nota</a></li>
+						<li><a href="/mark/add" th:text="#{addNote.message}" sec:authorize="hasRole('ROLE_USER')">Agregar Nota</a></li>
 						<li><a href="/mark/list" th:text="#{lookNotes.message}">Ver Notas</a></li>
 					</ul>
 				</li>
-				<li id="users-menu" class="dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+				<li id="users-menu" class="dropdown" sec:authorize="hasRole('ROLE_USER')">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#" th:text="#{userManagement.message}">
-						Gestión de Usuarios <span class="caret"></span>
+						Usuarios <span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
-						<li><a href="/user/add" th:text="#{addUser.message}">Agregar usuario</a></li>
+						<li><a href="/user/add" th:text="#{addUser.message}">Invitaciones</a></li>
 						<li><a href="/user/list" th:text="#{lookUsers.message}">Ver Usuarios</a></li>
 					</ul>
 				</li>
