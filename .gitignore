@@ -1,6 +1,9 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
 
+### BBDD ###
+hsqldb-2.4.0
+
 ### STS ###
 .apt_generated
 .classpath

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/head" />
+<body>
+	<!-- Barra de Navegación superior -->
+	<nav th:replace="fragments/nav" />
+	<div class="container">
+		<h2 th:text="#{userListTitle.message}">Usuarios</h2>
+		<p th:text="#{userListDescription.message}">Los usuarios que
+			actualmente figuran en el sistema son los siguientes:</p>
+		<div class="table-responsive">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th th:text="#{userDetailsID.message}">DNI</th>
+						<th th:text="#{userDetailsName.message}">Nombre</th>
+						<th th:text="#{userDetailsSurname.message}">Apellidos</th>
+						<th class="col-md-1"></th>
+						<th class="col-md-1"></th>
+						<th class="col-md-1"></th>
+						<th class="col-md-1"></th>
+						<th class="col-md-1"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="user : ${usersList}">
+						<td th:text="${user.dni}">71888888X</td>
+						<td th:text="${user.name}">Nombre del alumno</td>
+						<td th:text="${user.lastName}">Apellidos del alumno</td>
+						<td><a th:href="${'/user/details/' + user.id}"
+							th:text="#{noteListTableDetails.message}">detalles</a></td>
+						<td><a th:href="${'/user/edit/' + user.id}"
+							th:text="#{noteListTableModify.message}">modificar</a></td>
+						<td><a th:href="${'/user/delete/' + user.id}"
+							th:text="#{noteListTableDelete.message}">eliminar</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<footer th:replace="fragments/footer" />
+</body>
+</html>
