@@ -34,9 +34,6 @@
 					<tr th:each="user : ${usersList}">
 						<td th:text="${user.name}">Nombre del usuario</td>
 						<td th:text="${user.email}">Email del usuario</td>
-						<td><a th:href="${'/user/details/' + user.id}" th:text="#{noteListTableDetails.message}">detalles</a></td>
-						<td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="${'/user/edit/' + user.id}" th:text="#{noteListTableModify.message}">modificar</a></td>
-						<td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="${'/user/delete/' + user.id}" th:text="#{noteListTableDelete.message}">eliminar</a></td>
 					</tr>
 				</tbody>
 			</table>
