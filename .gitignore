@@ -4,6 +4,9 @@ target/
 ### BBDD ###
 hsqldb-2.4.0
 
+### JAVA ###
+bin/
+
 ### STS ###
 .apt_generated
 .classpath
