@@ -16,8 +16,15 @@
                         Usuarios <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="/user/seeInvitations" th:text="#{seeInvitations.message}">Ver Invitaciones</a></li>
                         <li><a href="/user/list" th:text="#{lookUsers.message}">Ver Usuarios</a></li>
+                    </ul>
+                </li>
+                <li id="invitation-menu" class="dropdown" sec:authorize="hasRole('ROLE_USER')">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" th:text="#{invitationManagement.message}">
+                        Invitaciones <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/user/seeInvitations" th:text="#{seeInvitations.message}">Ver Invitaciones</a></li>
                     </ul>
                 </li>
             </ul>
