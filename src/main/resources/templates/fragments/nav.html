@@ -17,6 +17,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="/user/list" th:text="#{lookUsers.message}">Ver Usuarios</a></li>
+                        <li><a href="/user/friendsList" th:text="#{lookFriends.message}">Ver Amigos</a></li>
                     </ul>
                 </li>
                 <li id="invitation-menu" class="dropdown" sec:authorize="hasRole('ROLE_USER')">
