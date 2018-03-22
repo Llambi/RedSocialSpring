@@ -38,7 +38,7 @@ public class UsersController {
 	@Autowired
 	private SignUpFormValidator signUpFormValidator;
 
-	@RequestMapping(value="/user/list", method=RequestMethod.POST)
+	@RequestMapping(value = "/user/list", method = RequestMethod.POST)
 	public String getList(Model model, Pageable pageable, Principal principal,
 			@RequestParam(value = "", required = false) String searchText) {
 
@@ -53,7 +53,7 @@ public class UsersController {
 		model.addAttribute("page", users);
 		return "user/list";
 	}
-	
+
 	@RequestMapping("/user/list")
 	public String getList(Model model, Pageable pageable, Principal principal) {
 
@@ -62,8 +62,7 @@ public class UsersController {
 		model.addAttribute("page", users);
 		return "user/list";
 	}
-	
-	
+
 	//
 	// @RequestMapping(value="/user/add")
 	// public String getUser(Model model){
@@ -137,4 +136,7 @@ public class UsersController {
 		User activeUser = usersService.getUserByEmail(name);
 		return "home";
 	}
+
+	/// Parte de Jose \\\
+
 }
