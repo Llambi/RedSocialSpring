@@ -39,7 +39,7 @@ public class SecurityService {
 
 		if (aToken.isAuthenticated()) {
 			SecurityContextHolder.getContext().setAuthentication(aToken);
-			logger.debug(String.format("Auto login %s successfully!", email));
+			logger.debug(String.format("Auto login is successfully!", email));
 		}
 	}
 

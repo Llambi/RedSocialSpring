@@ -4,6 +4,8 @@ import java.util.LinkedList;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -22,6 +24,8 @@ public class UsersService {
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@PostConstruct
 	public void init() {
@@ -35,6 +39,7 @@ public class UsersService {
 	public void addUser(User user) {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		usersRepository.save(user);
+		logger.info("Se ha añadido correctamente al usuario:"+user.getName());
 	}
 
 	public User getUserByEmail(String name) {
@@ -43,6 +48,7 @@ public class UsersService {
 
 	public void deleteUser(Long id) {
 		usersRepository.delete(id);
+		logger.info("Se ha borrado correctamente al usuario:"+user.getName());
 	}
 	
 	public Page<User> getUsers(Pageable pageable) {
