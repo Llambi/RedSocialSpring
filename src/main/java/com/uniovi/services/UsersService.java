@@ -67,4 +67,8 @@ public class UsersService {
 		whoReceived.addFriend(whoSended);
 		invitationsService.deleteInvitation(whoSended, whoReceived);
 	}
+
+	public Page<User> getFriendsByUser(Pageable pageable, User user) {
+		return usersRepository.findAllFriendsByUser(pageable, user);
+	}
 }

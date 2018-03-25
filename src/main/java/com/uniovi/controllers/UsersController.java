@@ -103,8 +103,8 @@ public class UsersController {
 	@RequestMapping(value = { "/sendInvitation/{id}" }, method = RequestMethod.GET)
 	public String sendInvitation(Model model, @PathVariable Long id, Pageable pageable) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String name = auth.getName();
-		User sender = usersService.getUserByEmail(name);
+		String email = auth.getName();
+		User sender = usersService.getUserByEmail(email);
 		User receiver = usersService.getUser(id);
 		Invitation invitation = invitationService.getInvitation(sender, receiver);
 		if (!receiver.getEmail().equals(sender.getEmail()) && !receiver.getFriends().contains(sender)
@@ -117,28 +117,39 @@ public class UsersController {
 		return "user/list";
 	}
 
-	@RequestMapping(value = { "/user/seeInvitations" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/user/invitationsList" }, method = RequestMethod.GET)
 	public String seeInvitations(Model model, Pageable pageable) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String name = auth.getName();
-		User activeUser = usersService.getUserByEmail(name);
+		String email = auth.getName();
+		User activeUser = usersService.getUserByEmail(email);
 		Page<Invitation> invitations = invitationService.getReceivedInvitationsByUser(pageable, activeUser);
 		model.addAttribute("invitationsList", invitations.getContent());
 		model.addAttribute("page", invitations);
-		return "user/seeInvitations";
+		return "user/invitationsList";
 	}
 
 	@RequestMapping(value = { "/acceptInvitation/{id}" }, method = RequestMethod.GET)
 	public String acceptInvitation(Model model, @PathVariable Long id, Pageable pageable) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String name = auth.getName();
-		User receiver = usersService.getUserByEmail(name);
+		String email = auth.getName();
+		User receiver = usersService.getUserByEmail(email);
 		User sender = usersService.getUser(id);
 		usersService.makeFriend(sender, receiver);
 		Page<Invitation> invitations = invitationService.getReceivedInvitationsByUser(pageable, receiver);
 		model.addAttribute("invitationsList", invitations.getContent());
 		model.addAttribute("page", invitations);
-		return "user/seeInvitations";
+		return "user/invitationsList";
+	}
+
+	@RequestMapping(value = { "/user/friendsList" }, method = RequestMethod.GET)
+	public String seeFriendsList(Model model, Pageable pageable) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		User activeUser = usersService.getUserByEmail(email);
+		Page<User> friends = usersService.getFriendsByUser(pageable, activeUser);
+		model.addAttribute("friendsList", friends.getContent());
+		model.addAttribute("page", friends);
+		return "user/friendsList";
 	}
 
 }
