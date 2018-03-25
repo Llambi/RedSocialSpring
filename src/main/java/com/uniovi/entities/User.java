@@ -1,24 +1,42 @@
 package com.uniovi.entities;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 @Entity
 public class User {
+
 	@Id
 	@GeneratedValue
 	private long id;
-	private String name;
+
 	@Column(unique = true)
 	private String email;
+
+	private String name;
 	private String role;
 	private String password;
-	
-	@Transient //propiedad que no se almacena e la tabla.
+
+	@Transient // propiedad que no se almacena e la tabla.
 	private String passwordConfirm;
+
+	@ManyToMany
+	@JoinTable(name = "friend")
+	private Set<User> friends;
+
+	@OneToMany(mappedBy = "sender")
+	private Set<Invitation> sendedInvitations;
+
+	@OneToMany(mappedBy = "receiver")
+	private Set<Invitation> receivedInvitations;
 
 	public User(String name, String email) {
 		super();
@@ -37,20 +55,20 @@ public class User {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getEmail() {
 		return email;
 	}
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getRole() {
@@ -68,12 +86,77 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	public String getPasswordConfirm() {
 		return passwordConfirm;
 	}
-	
+
 	public void setPasswordConfirm(String passwordConfirm) {
 		this.passwordConfirm = passwordConfirm;
+	}
+
+	public Set<User> getFriends() {
+		return friends;
+	}
+
+	public Set<Invitation> getSendedInvitations() {
+		return sendedInvitations;
+	}
+
+	public Set<Invitation> getReceivedInvitations() {
+		return receivedInvitations;
+	}
+
+	public void setFriends(Set<User> friends) {
+		this.friends = friends;
+	}
+
+	public void setSendedInvitations(Set<Invitation> sentInvitations) {
+		this.sendedInvitations = sentInvitations;
+	}
+
+	public void setReceivedInvitations(Set<Invitation> receivedInvitations) {
+		this.receivedInvitations = receivedInvitations;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
+	public void addFriend(User user) {
+		friends.add(user);
+		user.getFriends().add(this);
+	}
+
+	public boolean canInvite(Long id) {
+		// if (id == this.id)
+		// return false;
+		for (User user : friends) {
+			if (id == user.getId())
+				return false;
+		}
+		for (Invitation invitation : sendedInvitations) {
+			if (id == invitation.getReceiver().getId())
+				return false;
+		}
+		return true;
 	}
 }
