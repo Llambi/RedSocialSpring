@@ -117,4 +117,15 @@ public class UsersController {
 		return "user/list";
 	}
 
+	@RequestMapping(value = { "/user/seeInvitations" }, method = RequestMethod.GET)
+	public String seeInvitations(Model model, Pageable pageable) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();
+		User activeUser = usersService.getUserByEmail(name);
+		Page<Invitation> invitations = invitationService.getReceivedInvitationsByUser(pageable, activeUser);
+		model.addAttribute("invitationsList", invitations.getContent());
+		model.addAttribute("page", invitations);
+		return "user/seeInvitations";
+	}
+
 }

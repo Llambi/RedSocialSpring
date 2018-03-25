@@ -15,16 +15,15 @@ public class InvitationsService {
 	@Autowired
 	private InvitationsRepository invitationsRepository;
 
+	public void sendInvitation(User whoSended, User whoReceived) {
+		invitationsRepository.save(new Invitation(whoSended, whoReceived));
+	}
+
 	public Invitation getInvitation(User whoSended, User whoReceived) {
 		return invitationsRepository.searchInvitationByCoupleUsers(whoSended, whoReceived);
 	}
 
 	public Page<Invitation> getReceivedInvitationsByUser(Pageable pageable, User user) {
 		return invitationsRepository.searchReceivedInvitationsByUser(pageable, user);
-	}
-
-	public void sendInvitation(User whoSended, User whoReceived) {
-		Invitation invitation = new Invitation(whoSended, whoReceived);
-
 	}
 }
