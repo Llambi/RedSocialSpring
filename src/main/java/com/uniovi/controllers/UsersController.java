@@ -128,4 +128,17 @@ public class UsersController {
 		return "user/seeInvitations";
 	}
 
+	@RequestMapping(value = { "/acceptInvitation/{id}" }, method = RequestMethod.GET)
+	public String acceptInvitation(Model model, @PathVariable Long id, Pageable pageable) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();
+		User receiver = usersService.getUserByEmail(name);
+		User sender = usersService.getUser(id);
+		usersService.makeFriend(sender, receiver);
+		Page<Invitation> invitations = invitationService.getReceivedInvitationsByUser(pageable, receiver);
+		model.addAttribute("invitationsList", invitations.getContent());
+		model.addAttribute("page", invitations);
+		return "user/seeInvitations";
+	}
+
 }

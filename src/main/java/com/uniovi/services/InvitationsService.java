@@ -26,4 +26,8 @@ public class InvitationsService {
 	public Page<Invitation> getReceivedInvitationsByUser(Pageable pageable, User user) {
 		return invitationsRepository.searchReceivedInvitationsByUser(pageable, user);
 	}
+
+	public void deleteInvitation(User whoSended, User whoReceived) {
+		invitationsRepository.delete(getInvitation(whoSended, whoReceived));
+	}
 }

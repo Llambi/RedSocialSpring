@@ -21,6 +21,9 @@ public class UsersService {
 	private UsersRepository usersRepository;
 
 	@Autowired
+	private InvitationsService invitationsService;
+
+	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@PostConstruct
@@ -57,5 +60,11 @@ public class UsersService {
 		users = usersRepository.searchUsersByNameAndEmail(pageable, searchText);
 
 		return users;
+	}
+
+	public void makeFriend(User whoSended, User whoReceived) {
+		whoSended.addFriend(whoReceived);
+		whoReceived.addFriend(whoSended);
+		invitationsService.deleteInvitation(whoSended, whoReceived);
 	}
 }
