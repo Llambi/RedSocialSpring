@@ -21,8 +21,8 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th th:text="#{userDetailsName.message}">Nombre</th>
-                            <th th:text="#{userDetailsEmail.message}">Correo</th>
+                            <th th:text="#{userDetailsName.message}"></th>
+                            <th th:text="#{userDetailsEmail.message}"></th>
                             <th class="col-md-1"></th>
                             <th class="col-md-1"></th>
                             <th class="col-md-1"></th>
@@ -34,7 +34,7 @@
                         <tr th:each="user : ${usersList}">
                             <td th:text="${user.name}">NombreUsuario</td>
                             <td th:text="${user.email}">Correo</td>
-                            <td><a th:if="${user.canInvite(user.email)}" th:text="#{userSendInvitation.message}" th:href="${'/sendInvitation/' + user.id}">Agregar Amigo</a></td> 
+                            <td><a th:id="${user.name}" th:if="${user.canInvite(user.email)}" th:text="#{userSendInvitation.message}" th:href="${'/sendInvitation/' + user.id}"></a></td> 
                         </tr>
                     </tbody>
                 </table>

@@ -1,6 +1,5 @@
 package com.uniovi.entities;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -34,13 +33,13 @@ public class User {
 
 	@ManyToMany
 	@JoinTable(name = "friend")
-	private Set<User> friends = new HashSet<User>();
+	private Set<User> friends;
 
 	@OneToMany(mappedBy = "sender")
-	private Set<Invitation> sendedInvitations = new HashSet<Invitation>();
+	private Set<Invitation> sendedInvitations;
 
 	@OneToMany(mappedBy = "receiver")
-	private Set<Invitation> receivedInvitations = new HashSet<Invitation>();
+	private Set<Invitation> receivedInvitations;
 
 	public User(String name, String email) {
 		super();

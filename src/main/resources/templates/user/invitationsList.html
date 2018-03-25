@@ -25,7 +25,7 @@
                         <tr th:each="i : ${invitationsList}">
                             <td th:text="${i.sender.name}">NombreUsuario</td>
                             <td th:text="${i.sender.email}">Correo</td>
-                            <td><a th:text="#{acceptInvitation.message}" th:href="${'/acceptInvitation/' + i.sender.id}">Aceptar</a></td> 
+                            <td><a th:id="${i.sender.name}" th:text="#{acceptInvitation.message}" th:href="${'/acceptInvitation/' + i.sender.id}">Aceptar</a></td> 
                         </tr>
                     </tbody>
                 </table>
