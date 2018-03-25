@@ -27,7 +27,7 @@ public class UsersService {
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
-	
+
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@PostConstruct
@@ -41,7 +41,7 @@ public class UsersService {
 	public void addUser(User user) {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		usersRepository.save(user);
-		logger.info("Se ha añadido correctamente al usuario:"+user.getName());
+		logger.info("Se ha añadido correctamente al usuario:" + user.getName());
 	}
 
 	public User getUserByEmail(String name) {
@@ -49,8 +49,9 @@ public class UsersService {
 	}
 
 	public void deleteUser(Long id) {
+		User user = usersRepository.findById(id);
 		usersRepository.delete(id);
-		logger.info("Se ha borrado correctamente al usuario:"+user.getName());
+		logger.info("Se ha borrado correctamente al usuario:" + user.getName());
 	}
 
 	public Page<User> getUsers(Pageable pageable) {
