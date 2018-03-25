@@ -34,7 +34,7 @@
                         <tr th:each="user : ${usersList}">
                             <td th:text="${user.name}">NombreUsuario</td>
                             <td th:text="${user.email}">Correo</td>
-                            <td><a th:text="#{userSendInvitation.message}" th:href="${'/sendInvitation/' + user.id}">Agregar Amigo</a></td> 
+                            <td><a th:if="${user.canInvite(user.id)}" th:text="#{userSendInvitation.message}" th:href="${'/sendInvitation/' + user.id}">Agregar Amigo</a></td> 
                         </tr>
                     </tbody>
                 </table>

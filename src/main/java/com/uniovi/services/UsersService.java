@@ -16,7 +16,7 @@ import com.uniovi.repositories.UsersRepository;
 
 @Service
 public class UsersService {
-	
+
 	@Autowired
 	private UsersRepository usersRepository;
 
@@ -26,7 +26,6 @@ public class UsersService {
 	@PostConstruct
 	public void init() {
 	}
-
 
 	public User getUser(Long id) {
 		return usersRepository.findOne(id);
@@ -44,7 +43,7 @@ public class UsersService {
 	public void deleteUser(Long id) {
 		usersRepository.delete(id);
 	}
-	
+
 	public Page<User> getUsers(Pageable pageable) {
 		Page<User> users = new PageImpl<User>(new LinkedList<User>());
 		users = usersRepository.findAll(pageable);
