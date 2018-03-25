@@ -68,7 +68,7 @@ public class UsersController {
 		model.addAttribute("page", users);
 		return "user/list";
 	}
-	
+
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
 	public String signup(Model model) {
 		model.addAttribute("user", new User());
@@ -106,11 +106,7 @@ public class UsersController {
 		String email = auth.getName();
 		User sender = usersService.getUserByEmail(email);
 		User receiver = usersService.getUser(id);
-		Invitation invitation = invitationService.getInvitation(sender, receiver);
-		if (!receiver.getEmail().equals(sender.getEmail()) && !receiver.getFriends().contains(sender)
-				&& invitation == null) {
-			invitationService.sendInvitation(sender, receiver);
-		}
+		invitationService.sendInvitation(sender, receiver);
 		Page<User> users = usersService.getUsers(pageable);
 		model.addAttribute("usersList", users.getContent());
 		model.addAttribute("page", users);

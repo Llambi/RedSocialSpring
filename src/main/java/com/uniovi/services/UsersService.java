@@ -72,7 +72,10 @@ public class UsersService {
 	public void makeFriend(User whoSended, User whoReceived) {
 		whoSended.addFriend(whoReceived);
 		whoReceived.addFriend(whoSended);
+		logger.info(
+				"Se ha creado una relacion de amistad entre " + whoSended.getEmail() + " y " + whoReceived.getEmail());
 		invitationsService.deleteInvitation(whoSended, whoReceived);
+		logger.info("Se ha borrado la invitacion entre " + whoSended.getEmail() + " y " + whoReceived.getEmail());
 	}
 
 	public Page<User> getFriendsByUser(Pageable pageable, User user) {
