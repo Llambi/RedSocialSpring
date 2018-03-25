@@ -1,5 +1,6 @@
 package com.uniovi.entities;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -10,6 +11,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @Entity
 public class User {
@@ -30,13 +34,13 @@ public class User {
 
 	@ManyToMany
 	@JoinTable(name = "friend")
-	private Set<User> friends;
+	private Set<User> friends = new HashSet<User>();
 
 	@OneToMany(mappedBy = "sender")
-	private Set<Invitation> sendedInvitations;
+	private Set<Invitation> sendedInvitations = new HashSet<Invitation>();
 
 	@OneToMany(mappedBy = "receiver")
-	private Set<Invitation> receivedInvitations;
+	private Set<Invitation> receivedInvitations = new HashSet<Invitation>();
 
 	public User(String name, String email) {
 		super();
@@ -146,15 +150,21 @@ public class User {
 		user.getFriends().add(this);
 	}
 
-	public boolean canInvite(Long id) {
-		// if (id == this.id)
-		// return false;
+	public boolean canInvite(String email) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String activeEmail = auth.getName();
+		if (email == activeEmail)
+			return false;
 		for (User user : friends) {
-			if (id == user.getId())
+			if (user.getEmail().equals(activeEmail))
 				return false;
 		}
 		for (Invitation invitation : sendedInvitations) {
-			if (id == invitation.getReceiver().getId())
+			if (invitation.getReceiver().getEmail().equals(activeEmail))
+				return false;
+		}
+		for (Invitation invitation : receivedInvitations) {
+			if (invitation.getSender().getEmail().equals(activeEmail))
 				return false;
 		}
 		return true;

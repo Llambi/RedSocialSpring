@@ -114,7 +114,7 @@ public class UsersController {
 		Page<User> users = usersService.getUsers(pageable);
 		model.addAttribute("usersList", users.getContent());
 		model.addAttribute("page", users);
-		return "user/list";
+		return "redirect:/user/list";
 	}
 
 	@RequestMapping(value = { "/user/invitationsList" }, method = RequestMethod.GET)
