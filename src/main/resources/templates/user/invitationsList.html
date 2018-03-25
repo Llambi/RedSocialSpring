@@ -6,16 +6,7 @@
         <!-- Barra de Navegación superior -->
         <nav th:replace="fragments/nav" />
         <div class="container">
-            <h2 th:text="#{userListTitle.message}">Usuarios</h2>
-
-            <form class="navbar-form" th:action="${'/user/list'}" method="post">
-                <div class="form-group">
-                    <input name="searchText" type="text" class="form-control" size="50" th:placeholder="#{placeholderSearchUsers.message}">
-                </div>
-                <button type="submit" class="btn btn-default"><span th:text="#{searchUsersButton.message}">Buscar</span></button>
-            </form>
-
-            <p th:text="#{listUsers.message}">Lista usuarios:</p>
+            <h2 th:text="#{invitationListTitle.message}">Invitaciones</h2>
 
             <div class="table-responsive">
                 <table class="table table-hover">
@@ -31,10 +22,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="user : ${usersList}">
-                            <td th:text="${user.name}">NombreUsuario</td>
-                            <td th:text="${user.email}">Correo</td>
-                            <td><a th:if="${user.canInvite(user.email)}" th:text="#{userSendInvitation.message}" th:href="${'/sendInvitation/' + user.id}">Agregar Amigo</a></td> 
+                        <tr th:each="i : ${invitationsList}">
+                            <td th:text="${i.sender.name}">NombreUsuario</td>
+                            <td th:text="${i.sender.email}">Correo</td>
+                            <td><a th:text="#{acceptInvitation.message}" th:href="${'/acceptInvitation/' + i.sender.id}">Aceptar</a></td> 
                         </tr>
                     </tbody>
                 </table>

@@ -14,11 +14,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.uniovi.entities.Invitation;
 import com.uniovi.entities.User;
+import com.uniovi.services.InvitationsService;
 import com.uniovi.services.RolesService;
 import com.uniovi.services.SecurityService;
 import com.uniovi.services.UsersService;
@@ -33,12 +36,15 @@ public class UsersController {
 	private UsersService usersService;
 
 	@Autowired
+	private InvitationsService invitationService;
+
+	@Autowired
 	private SecurityService securityService;
 
 	@Autowired
 	private SignUpFormValidator signUpFormValidator;
 
-	@RequestMapping(value="/user/list", method=RequestMethod.POST)
+	@RequestMapping(value = "/user/list", method = RequestMethod.POST)
 	public String getList(Model model, Pageable pageable, Principal principal,
 			@RequestParam(value = "", required = false) String searchText) {
 
@@ -53,7 +59,7 @@ public class UsersController {
 		model.addAttribute("page", users);
 		return "user/list";
 	}
-	
+
 	@RequestMapping("/user/list")
 	public String getList(Model model, Pageable pageable, Principal principal) {
 
@@ -89,9 +95,61 @@ public class UsersController {
 
 	@RequestMapping(value = { "/home" }, method = RequestMethod.GET)
 	public String home(Model model) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String name = auth.getName();
-		User activeUser = usersService.getUserByEmail(name);
 		return "home";
 	}
+
+	/// Invitaciones \\\
+
+	@RequestMapping(value = { "/sendInvitation/{id}" }, method = RequestMethod.GET)
+	public String sendInvitation(Model model, @PathVariable Long id, Pageable pageable) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		User sender = usersService.getUserByEmail(email);
+		User receiver = usersService.getUser(id);
+		Invitation invitation = invitationService.getInvitation(sender, receiver);
+		if (!receiver.getEmail().equals(sender.getEmail()) && !receiver.getFriends().contains(sender)
+				&& invitation == null) {
+			invitationService.sendInvitation(sender, receiver);
+		}
+		Page<User> users = usersService.getUsers(pageable);
+		model.addAttribute("usersList", users.getContent());
+		model.addAttribute("page", users);
+		return "redirect:/user/list";
+	}
+
+	@RequestMapping(value = { "/user/invitationsList" }, method = RequestMethod.GET)
+	public String seeInvitations(Model model, Pageable pageable) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		User activeUser = usersService.getUserByEmail(email);
+		Page<Invitation> invitations = invitationService.getReceivedInvitationsByUser(pageable, activeUser);
+		model.addAttribute("invitationsList", invitations.getContent());
+		model.addAttribute("page", invitations);
+		return "user/invitationsList";
+	}
+
+	@RequestMapping(value = { "/acceptInvitation/{id}" }, method = RequestMethod.GET)
+	public String acceptInvitation(Model model, @PathVariable Long id, Pageable pageable) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		User receiver = usersService.getUserByEmail(email);
+		User sender = usersService.getUser(id);
+		usersService.makeFriend(sender, receiver);
+		Page<Invitation> invitations = invitationService.getReceivedInvitationsByUser(pageable, receiver);
+		model.addAttribute("invitationsList", invitations.getContent());
+		model.addAttribute("page", invitations);
+		return "user/invitationsList";
+	}
+
+	@RequestMapping(value = { "/user/friendsList" }, method = RequestMethod.GET)
+	public String seeFriendsList(Model model, Pageable pageable) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		User activeUser = usersService.getUserByEmail(email);
+		Page<User> friends = usersService.getFriendsByUser(pageable, activeUser);
+		model.addAttribute("friendsList", friends.getContent());
+		model.addAttribute("page", friends);
+		return "user/friendsList";
+	}
+
 }

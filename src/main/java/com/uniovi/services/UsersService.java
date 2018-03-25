@@ -18,9 +18,12 @@ import com.uniovi.repositories.UsersRepository;
 
 @Service
 public class UsersService {
-	
+
 	@Autowired
 	private UsersRepository usersRepository;
+
+	@Autowired
+	private InvitationsService invitationsService;
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -30,7 +33,6 @@ public class UsersService {
 	@PostConstruct
 	public void init() {
 	}
-
 
 	public User getUser(Long id) {
 		return usersRepository.findOne(id);
@@ -50,7 +52,7 @@ public class UsersService {
 		usersRepository.delete(id);
 		logger.info("Se ha borrado correctamente al usuario:"+user.getName());
 	}
-	
+
 	public Page<User> getUsers(Pageable pageable) {
 		Page<User> users = new PageImpl<User>(new LinkedList<User>());
 		users = usersRepository.findAll(pageable);
@@ -64,5 +66,15 @@ public class UsersService {
 		users = usersRepository.searchUsersByNameAndEmail(pageable, searchText);
 
 		return users;
+	}
+
+	public void makeFriend(User whoSended, User whoReceived) {
+		whoSended.addFriend(whoReceived);
+		whoReceived.addFriend(whoSended);
+		invitationsService.deleteInvitation(whoSended, whoReceived);
+	}
+
+	public Page<User> getFriendsByUser(Pageable pageable, User user) {
+		return usersRepository.findAllFriendsByUser(pageable, user);
 	}
 }
